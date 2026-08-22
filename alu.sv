@@ -58,3 +58,38 @@ module tb_traffic_light ();
         end
     end
 endmodule
+
+// Challenge 2: Modified testbench to have finish
+`timescale 1ns/1ps
+
+module tb_traffic_light;
+
+    logic clk;
+    logic rst;
+    state_t state;
+
+    traffic_light_sv dut (
+        .clk   (clk),
+        .rst   (rst),
+        .state (state)
+    );
+
+    always #10 clk = ~clk;
+
+    initial begin
+        clk = 1'b0;
+        rst = 1'b1;
+
+        #20;
+        rst = 1'b0;
+
+        repeat (4) begin
+            @(posedge clk);
+            $strobe("time=%0t state=%s", $time, state.name());
+        end
+
+        #1;
+        $finish; //added finish to end the simulation after 4 cycles
+    end
+
+endmodule
