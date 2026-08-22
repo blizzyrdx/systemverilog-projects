@@ -39,3 +39,22 @@ typedef enum logic [1:0] {RED, GREEN, YELLOW, ALL_RED} state_t;
             endcase
         end //end to always_ff block
     endmodule
+
+// Challenge 2: Write a short SystemVerilog testbench that instantiates traffic_light_sv, generates a clock, pulses rst, and prints the state name each cycle.
+module tb_traffic_light ();
+    logic clk, rst;
+    state_t state; //previous state_t definition is used here to declare the state variable
+
+    traffic_light_sv dut (.clk(clk), .rst(rst), .state(state)); //dut is design-under-test
+
+    always #10 clk = ~clk; // clock generation, toggles clk every 10 time units, ~ is bitwise NOT operator, so it inverts the clk signal
+ 
+    initial begin
+        clk = 0; rst = 1;
+        #20 rst = 0;
+        repeat (4) begin
+            @ (posedge clk);
+            $display("time=%0t state=%s", $time, state.name());
+        end
+    end
+endmodule
