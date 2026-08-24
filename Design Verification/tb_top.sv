@@ -19,3 +19,6 @@ module tb_top;
 
 	// Develop rest of the testbench and write stimulus that can be driven to the design
 endmodule
+
+// DUT is the design under test, which is typically used in post-silicon verification.
+// DUV is the design under verification, which is typically used in pre-silicon verification.
